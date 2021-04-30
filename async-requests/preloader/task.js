@@ -18,16 +18,16 @@ requestStocks.responseType = 'json';
 requestStocks.send();
 requestStocks.onload = function () {
     if (requestStocks.status === 200) {
-        let preloader = document.getElementById('loader');
+        const preloader = document.getElementById('loader');   //Скрываем прелоадер
         preloader.className = 'loader';
-        let responseObj = requestStocks.response;
-        let itemCode = document.getElementById('items');
+        const itemCode = document.getElementById('items');      //Очищаем значения из Storage
         itemCode.innerHTML = '';
+
+        const responseObj = requestStocks.response;                       //Получаем ответ и создаем айтемы
         const valutes = responseObj.response.Valute;
-        console.log(valutes);
         for (let key in valutes) {
             const valute = valutes[key];
-            let item = createItem(valute.CharCode, valute.Value, 'руб.');
+            const item = createItem(valute.CharCode, valute.Value, 'руб.');
             itemCode.appendChild(item);
             myStorage.setItem(valute.CharCode, valute.Value);
         }

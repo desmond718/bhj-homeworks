@@ -42,18 +42,19 @@ function sendAnswerResponse(voteId, answerId) {
         console.log(responseObj);
         const pollAnswer = document.getElementById('poll__answers');
         pollAnswer.className = 'poll__answers';
-        const pollAnswers = document.getElementById('poll__answers');
+        const titleAnswers = document.getElementById('poll__title');
         const stats = responseObj.stat;
         const totalAnswer = totalAnswers(stats);
         for (let i = 0; i < stats.length; i++) {
             let percent = stats[i].votes * 100 / totalAnswer;
             const answer = createPollAnswer(stats[i].answer, percent.toFixed(2));
-            document.body.appendChild(answer);
+            titleAnswers.appendChild(answer);
         }
 
 
     }
 }
+
 function totalAnswers (statsObj) {
     let total = 0;
     for (let i = 0; i < statsObj.length; i++) {
@@ -62,8 +63,20 @@ function totalAnswers (statsObj) {
     return total;
 }
 
-function createPollAnswer(answer, percent) {
-    const resultAnswer = document.createElement('div');
-    resultAnswer.textContent = answer + ': ' + percent + '%';
-    return resultAnswer;
+function createPollAnswer(answer, percents) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'results_poll';
+
+    const resultAnswer = document.createElement('span');
+    resultAnswer.className = 'result_poll';
+    resultAnswer.textContent = answer + ': ';
+
+    const percent = document.createElement('span');
+    percent.className = 'percent';
+    percent.textContent = percents + '%';
+
+    wrapper.appendChild(resultAnswer);
+    wrapper.appendChild(percent);
+
+    return wrapper;
 }

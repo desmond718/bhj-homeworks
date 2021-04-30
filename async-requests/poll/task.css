@@ -7,3 +7,6 @@ body {
 .poll__answers_active {
   display: block;
 }
+.percent {
+  font-weight: bold;
+}

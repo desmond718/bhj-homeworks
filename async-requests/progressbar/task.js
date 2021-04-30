@@ -14,7 +14,7 @@ form.onsubmit = function upload (event) {
     xhr.open('POST', 'https://netology-slow-rest.herokuapp.com/upload.php');
     xhr.setRequestHeader("Content-Type", "multipart/form-data");
     xhr.setRequestHeader("Cache-Control", "no-cache");
-    // xhr.onprogress = function (event) {
+    // xhr.onprogress = function (event) {                              // Не работает так как в event.total приходит 0
     //     //progress.value = event.loaded / event.total * 100;
     //     console.log(event)
     // }

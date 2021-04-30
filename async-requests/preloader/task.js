@@ -1,4 +1,17 @@
 'use strict';
+const myStorage = window.localStorage;          //Создание и проверка не пустого стораджа
+if (myStorage.length > 0) {
+    let preloader = document.getElementById('loader');
+    preloader.className = 'loader';
+    let itemCode = document.getElementById('items');
+
+    for (let [key, value] of Object.entries(myStorage)) {
+        let item = createItem(key, value, 'руб.');
+        itemCode.appendChild(item);
+    }
+
+}
+
 const requestStocks = new XMLHttpRequest();
 requestStocks.open('GET', 'https://netology-slow-rest.herokuapp.com');
 requestStocks.responseType = 'json';
@@ -9,15 +22,19 @@ requestStocks.onload = function () {
         preloader.className = 'loader';
         let responseObj = requestStocks.response;
         let itemCode = document.getElementById('items');
+        itemCode.innerHTML = '';
         const valutes = responseObj.response.Valute;
+        console.log(valutes);
         for (let key in valutes) {
             const valute = valutes[key];
             let item = createItem(valute.CharCode, valute.Value, 'руб.');
             itemCode.appendChild(item);
+            myStorage.setItem(valute.CharCode, valute.Value);
         }
     } else {
         alert('Ошибка!');
     }
+
 };
 
 function createItem(code, value, currency) {
@@ -39,6 +56,7 @@ function createItem(code, value, currency) {
     wrapper.appendChild(codeEl);
     wrapper.appendChild(valueEl);
     wrapper.appendChild(currencyEl);
+
 
     return wrapper;
 }

@@ -9,7 +9,6 @@ if (myStorage.length > 0) {
         let item = createItem(key, value, 'руб.');
         itemCode.appendChild(item);
     }
-
 }
 
 const requestStocks = new XMLHttpRequest();

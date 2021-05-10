@@ -22,7 +22,6 @@ for (let item of arrLink) {
 }
 
 for (let item of dropItem) {
-    console.log(item);
     item.addEventListener('click', () => {
         listMenu[0].classList.remove('dropdown__list_active');
         dropDownValue[0].textContent = item.textContent;

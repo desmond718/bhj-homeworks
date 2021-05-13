@@ -13,6 +13,5 @@ function elementVision () {
         } else {
             item.classList.add('reveal_active');
         }
-
     }
 }

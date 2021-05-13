@@ -8,14 +8,11 @@ function elementVision () {
         const elementTop = item.getBoundingClientRect().top;
         const elementBottom = item.getBoundingClientRect().bottom;
 
-        if (viewportHeight > elementTop) {
-            item.classList.add('reveal_active');
-        } else {
+        if (viewportHeight > elementBottom || viewportHeight < elementTop) {
             item.classList.remove('reveal_active');
+        } else {
+            item.classList.add('reveal_active');
         }
 
-        if (viewportHeight > elementBottom) {
-            item.classList.remove('reveal_active');
-        }
     }
 }

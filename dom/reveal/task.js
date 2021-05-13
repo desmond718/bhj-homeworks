@@ -8,8 +8,6 @@ function elementVision () {
         const elementTop = item.getBoundingClientRect().top;
         const elementBottom = item.getBoundingClientRect().bottom;
 
-        console.log(viewportHeight);
-        console.log(elementTop);
         if (viewportHeight > elementBottom || viewportHeight < elementTop) {
             item.classList.remove('reveal_active');
         } else {

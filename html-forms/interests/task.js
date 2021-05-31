@@ -10,6 +10,10 @@ for (let item of checkbox) {
             for (let item2 of sisCheckbox) {
                 item2.checked = true;
             }
+        } else {
+            for (let item2 of sisCheckbox) {
+                item2.checked = false;
+            }
         }
     })
 }

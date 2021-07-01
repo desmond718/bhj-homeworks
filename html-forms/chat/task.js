@@ -3,6 +3,7 @@ const openChat = document.querySelector('.chat-widget__side');
 const chatWidget = document.querySelector('.chat-widget');
 const inputChat = document.querySelector('.chat-widget__input');
 const messages = document.querySelector('.chat-widget__messages');
+const scrollChat = document.querySelector('.chat-widget__messages-container');
 
 //Открытие чата
 openChat.addEventListener('click', () => {
@@ -30,6 +31,8 @@ inputChat.addEventListener('keydown', (event) => {
 
     clearTimeout(questionFromRobot);
     setTimeout(questionFromRobot, 30000);
+    scrollChat.scrollTop = scrollChat.scrollHeight;
+    console.log(scrollChat.scrollHeight);
   }
 });
 

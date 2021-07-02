@@ -68,6 +68,13 @@ class Autocomplete {
   }
 
   getMatches( text ) {
+    const arrayOptions = Array.from(this.input.options);
+
+    arrayOptions.map( (item) => {
+      if (item.text.includes(text)) {
+        console.log(item.text);
+      }
+    })
     /*
       TODO: этот метод нужно дописать
       text - фраза, которую вводят в поле поиска
@@ -85,7 +92,7 @@ class Autocomplete {
       {
         text: 'Чубакка',
         value: '1'
-      }
+      },
     ];
   }
 }

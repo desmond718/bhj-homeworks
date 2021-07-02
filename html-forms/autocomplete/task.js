@@ -69,10 +69,10 @@ class Autocomplete {
 
   getMatches( text ) {
     const arrayOptions = Array.from(this.input.options);
-
-    arrayOptions.map( (item) => {
+    const result = [];
+    arrayOptions.forEach( (item) => {
       if (item.text.includes(text)) {
-        console.log(item.text);
+        result.push({text: item.text, value: item.value})
       }
     })
     /*
@@ -88,12 +88,7 @@ class Autocomplete {
         value: 'Содержимое атрибута value'
       }
     */
-    return [
-      {
-        text: 'Чубакка',
-        value: '1'
-      },
-    ];
+    return result;
   }
 }
 

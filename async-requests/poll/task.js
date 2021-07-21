@@ -1,23 +1,33 @@
 'use strict';
-const xhrPoll = new XMLHttpRequest();
-xhrPoll.open('GET', 'https://netology-slow-rest.herokuapp.com/poll.php');
-xhrPoll.responseType = 'json';
-xhrPoll.send();
-xhrPoll.onload = function() {
-    if (xhrPoll.status === 200) {
-        const responseObj = xhrPoll.response;
-        console.log(responseObj);
+const xhr = new XMLHttpRequest();    //Создаем запрос
+xhr.open('GET', 'https://netology-slow-rest.herokuapp.com/poll.php'); //открываем соединение
+xhr.responseType = 'json'; //Выбираем тип ответа
+xhr.send();    //Отправляем запрос
+xhr.onload = () => {
+
+    // по событию полной загрузки делаем следующее:
+    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+
+        //Сохраняем объект ответа
+        const responseObj = xhr.response;
+
+        //Создаем тайтл опроса
         const pollTitle = document.getElementById('poll__title');
+        pollTitle.className = 'poll__title';
         pollTitle.textContent = responseObj.data.title;
 
+        //Создаем варианты ответа
         const pollAnswers = document.getElementById('poll__answers');
         const answers = responseObj.data.answers;
         for (let i = 0; i < answers.length; i++) {
-            const button = createButtonAnswer(answers[i]);
-            button.onclick = function () {
-                sendAnswerResponse(responseObj.id, i);
+            const button = createAnswerButton(answers[i]);
+
+            button.addEventListener('click', () => {
+
+                //Отправляем ответ обратно на сервер
+                sendAnswerResponse(responseObj.id, answers[i]);
                 alert('Спасибо, ваш голос засчитан!');
-            }
+            });
             pollAnswers.appendChild(button);
         }
     } else {
@@ -25,33 +35,33 @@ xhrPoll.onload = function() {
     }
 };
 
-function createButtonAnswer(value) {
+function createAnswerButton (value) {
     const buttonAnswer = document.createElement('button');
     buttonAnswer.className = 'poll__answer';
     buttonAnswer.textContent = value;
     return buttonAnswer;
 }
 
-function sendAnswerResponse(voteId, answerId) {
+function sendAnswerResponse (pollId, answer) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'https://netology-slow-rest.herokuapp.com/poll.php');
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.send('vote=' + voteId + '&answer=' + answerId);
-    xhr.onload = function () {
-        const responseObj = JSON.parse(xhr.response);
-        console.log(responseObj);
-        const pollAnswer = document.getElementById('poll__answers');
-        pollAnswer.className = 'poll__answers';
-        const titleAnswers = document.getElementById('poll__title');
+    xhr.setRequestHeader( 'Content-type', 'application/x-www-form-urlencoded' );
+    xhr.responseType = 'json';
+    xhr.send('vote=' + pollId + '&answer=' + answer);
+    xhr.onload = () => {
+        const responseObj = xhr.response;
+
+        const pollTitle = document.getElementById('poll__title');
+        const pollAnswers = document.getElementById('poll__answers');
+        pollAnswers.className = 'poll__answers';
         const stats = responseObj.stat;
-        const totalAnswer = totalAnswers(stats);
+
+        const total = totalAnswers(stats);
         for (let i = 0; i < stats.length; i++) {
-            let percent = stats[i].votes * 100 / totalAnswer;
-            const answer = createPollAnswer(stats[i].answer, percent.toFixed(2));
-            titleAnswers.appendChild(answer);
+            let percent = stats[i].votes * 100 / total;
+            const answers = createPollAnswer(stats[i].answer, percent.toFixed(2));
+            pollTitle.appendChild(answers);
         }
-
-
     }
 }
 
@@ -63,20 +73,19 @@ function totalAnswers (statsObj) {
     return total;
 }
 
-function createPollAnswer(answer, percents) {
+function createPollAnswer (answer, percent) {
     const wrapper = document.createElement('div');
     wrapper.className = 'results_poll';
 
     const resultAnswer = document.createElement('span');
     resultAnswer.className = 'result_poll';
-    resultAnswer.textContent = answer + ': ';
+    resultAnswer.textContent = answer + ': ';;
 
-    const percent = document.createElement('span');
-    percent.className = 'percent';
-    percent.textContent = percents + '%';
+    const percentAnswer = document.createElement('span');
+    percentAnswer.className = 'percent_poll';
+    percentAnswer.textContent = percent + '%';
 
     wrapper.appendChild(resultAnswer);
-    wrapper.appendChild(percent);
-
+    wrapper.appendChild(percentAnswer);
     return wrapper;
 }
